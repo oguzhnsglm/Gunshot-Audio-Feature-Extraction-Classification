@@ -1,4 +1,4 @@
-# Gunshot-Audio-Feature-Extraction-Classification
+# 🔫 Gunshot Audio Feature Extraction & Classification
 
 Bu proje, **farklı silah seslerini** sınıflandırmak için geliştirilmiş bir **ses tabanlı makine öğrenmesi sistemi**dir.  
 Sistem, ham ses dosyalarından (WAV/MP3) çeşitli özellikler (MFCC, ZCR, Spectral özellikler, Chroma vb.) çıkarır ve bunları kullanarak bir **sinir ağı (Dense Neural Network)** yardımıyla hangi silaha ait olduğunu tahmin eder.
@@ -20,8 +20,13 @@ Sistem, ham ses dosyalarından (WAV/MP3) çeşitli özellikler (MFCC, ZCR, Spect
   - Poly Features
 - Bu özellikler sayesinde her ses dosyası **128-200 boyutlu** bir vektöre dönüştürülür.
 
+- **Özellik Seçimi (Feature Selection):**
+  - Çıkarılan çok sayıda özelliğin en anlamlılarını seçmek için çeşitli algoritmalar (Information Gain, ANOVA F-Value, Random Forest Importance, RFE vb.) kullanılır.
+  - Bu sayede boyut azaltma (dimensionality reduction) yapılır ve model daha hızlı, daha az overfitting eğilimi ile çalışır.
+  - Örneğin en iyi **128 özellik** seçilerek `selected_features.csv` dosyası oluşturulur.
+
 - **Model:**
-  - Çıkarılan özellikler bir **Dense Neural Network (MLP)**’ye verilerek sınıflandırma yapılır.
+  - Seçilen özellikler bir **Dense Neural Network (MLP)**’ye verilerek sınıflandırma yapılır.
   - Activation: `ReLU`, Çıkış: `Softmax`
   - Kayıp fonksiyonu: `Categorical Crossentropy`
 
@@ -31,14 +36,15 @@ Sistem, ham ses dosyalarından (WAV/MP3) çeşitli özellikler (MFCC, ZCR, Spect
 
 - Dataset toplamda **8 farklı silah türü** ve her birinden **~100 örnek** olmak üzere yaklaşık **800 ses dosyası** içerir.
 - Split oranı:
-  - **%70 Train**  
-  - **%10 Validation**  
-  - **%20 Test**
-
+  - **%80 Train**
+  - **%20 Validation**
+  
 Bu sayede model:
 - Eğitim sırasında `train` datasıyla öğrenir,
-- `validation` ile overfitting kontrol edilir,
-- En son `test` ile gerçek başarı ölçülür.
+- `validation` ile overfitting kontrol edilir.
+
+> 🔍 Projede ayrıca `feature_selection.py` çalıştırılarak en iyi 128 öznitelik belirlenip 
+`selected_features.csv` dosyası oluşturulur ve eğitim/test bu dosya üzerinden yapılır.
 
 ---
 
@@ -52,6 +58,6 @@ Bu proje Python üzerinde çalışır ve temel kütüphaneleri şunlardır:
 - tensorflow / keras
 - matplotlib
 
-### 🐍 Örnek pip kurulumu:
+### 🐍 Örnek pip kurulumu
 ```bash
 pip install numpy pandas librosa scikit-learn tensorflow matplotlib
